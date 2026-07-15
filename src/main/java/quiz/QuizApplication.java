@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import quiz.entity.Quiz;
+import quiz.entity.QuizFourChoices;
+import quiz.repository.QuizFourChoicesRepository;
 import quiz.service.QuizService;
 
 @SpringBootApplication
-public class QuizApplication {
+public class QuizApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(QuizApplication.class, args);
@@ -21,6 +24,8 @@ public class QuizApplication {
 	
 	@Autowired
 	QuizService quizService;
+	@Autowired
+	QuizFourChoicesRepository repository;
 	
 	private void execute() {
 //		setup();
@@ -105,6 +110,37 @@ public class QuizApplication {
 			System.out.println("不正解です…");
 		}
 		
+	}
+	
+	@Override
+	public void run(String... args) throws Exception{
+		System.out.println("--- 🚀 4択クイズのテストデータ登録を開始します ---");
+
+        // 1. テストデータのインスタンスを作成 (IDは自動採番されるので null)
+        QuizFourChoices testQuiz = new QuizFourChoices(
+            null,
+            "Javaでボイラープレートコードを削減するためのライブラリはどれ？",
+            "Spring Boot",
+            "Lombok",
+            "Hibernate",
+            "PostgreSQL",
+            2 // 正解は 2 (Lombok)
+        );
+
+        // 2. データベースに保存
+        QuizFourChoices savedQuiz = repository.save(testQuiz);
+        System.out.println("💾 データベースに保存しました！ ID: " + savedQuiz.getId());
+
+        // 3. 全件取得してコンソールに表示
+        System.out.println("🔍 登録されたデータを取得します：");
+        repository.findAll().forEach(quiz -> {
+            System.out.println("問題: " + quiz.getQuestion());
+            System.out.println("選択肢1: " + quiz.getChoice_1());
+            System.out.println("選択肢2: " + quiz.getChoice_2());
+            System.out.println("正解番号: " + quiz.getAnswer());
+        });
+
+        System.out.println("--- 🎉 テストデータ登録テストが正常に終了しました ---");
 	}
 
 }
