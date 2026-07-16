@@ -7,5 +7,6 @@ CREATE TABLE quiz_four_choices (
     choice_2 VARCHAR(255) NOT NULL,
     choice_3 VARCHAR(255) NOT NULL,
     choice_4 VARCHAR(255) NOT NULL,
-    answer INT NOT NULL
+    answer INT NOT NULL,
+    author VARCHAR(100)
 );

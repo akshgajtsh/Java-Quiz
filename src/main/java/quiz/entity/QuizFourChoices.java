@@ -20,5 +20,6 @@ public class QuizFourChoices {
     private String choice_3;
     private String choice_4;
     private Integer answer;
+    private String author;
 
 }

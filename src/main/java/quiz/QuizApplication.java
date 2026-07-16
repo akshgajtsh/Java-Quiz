@@ -118,13 +118,14 @@ public class QuizApplication implements CommandLineRunner{
 
         // 1. テストデータのインスタンスを作成 (IDは自動採番されるので null)
         QuizFourChoices testQuiz = new QuizFourChoices(
-            null,
-            "Javaでボイラープレートコードを削減するためのライブラリはどれ？",
-            "Spring Boot",
-            "Lombok",
-            "Hibernate",
-            "PostgreSQL",
-            2 // 正解は 2 (Lombok)
+        		null,
+                "Javaでボイラープレートコードを削減するためのライブラリはどれ？",
+                "Spring Boot",
+                "Lombok",
+                "Hibernate",
+                "PostgreSQL",
+                2,
+                "ウナ"
         );
 
         // 2. データベースに保存
@@ -138,6 +139,7 @@ public class QuizApplication implements CommandLineRunner{
             System.out.println("選択肢1: " + quiz.getChoice_1());
             System.out.println("選択肢2: " + quiz.getChoice_2());
             System.out.println("正解番号: " + quiz.getAnswer());
+            System.out.println("作成者(Author): " + quiz.getAuthor()); // 👈 ここもgetAuthorに！
         });
 
         System.out.println("--- 🎉 テストデータ登録テストが正常に終了しました ---");
