@@ -27,8 +27,6 @@ public class QuizFourChoicesForm {
 	@NotBlank
 	private String author;
 
-	public Boolean newFourQuiz() {
-		return this.id == null;
-	};
+	private Boolean newFourQuiz;
 
 }
