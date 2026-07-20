@@ -3,6 +3,8 @@ package quiz.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import quiz.entity.Quiz;
 
 public interface QuizService {
@@ -29,5 +31,8 @@ public interface QuizService {
 	
 	/*10件ランダム取得*/
 	List<Quiz> select10Random();
+	
+	/*CSV読取*/
+	int insertFromCsv(MultipartFile file) throws Exception;
 
 }

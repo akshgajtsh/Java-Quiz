@@ -1,11 +1,15 @@
 package quiz.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import quiz.entity.Quiz;
 import quiz.entity.QuizFourChoices;
 import quiz.repository.QuizFourChoicesRepository;
 
@@ -28,11 +32,6 @@ public class QuizFourChoicesServiceImpl implements QuizFourChoicesService {
 
 	@Override
 	public Optional<QuizFourChoices> selectOneRandom() {
-//		Integer randId = repository.getRandamId();
-//		if(randId == null) {
-//			return Optional.empty();
-//		}
-//		return repository.findById(randId);
 		return repository.selectRandomOne();
 	}
 
@@ -62,6 +61,11 @@ public class QuizFourChoicesServiceImpl implements QuizFourChoicesService {
 	public void deleteQuizFourChoices(Integer id) {
 		repository.deleteById(id);
 
+	}
+	
+	public int insertFromCsv(MultipartFile file) throws Exception {
+		List<Quiz> quizList = new ArrayList<>();
+		/*処理次回記載*/
 	}
 
 }

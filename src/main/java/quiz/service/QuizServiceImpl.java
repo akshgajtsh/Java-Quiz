@@ -1,11 +1,13 @@
 package quiz.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import quiz.entity.Quiz;
 import quiz.repository.QuizRepository;
@@ -78,6 +80,11 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public List<Quiz> select10Random(){
 		return quizRepository.getRandomQuiz();
+	}
+	
+	public int insertFromCsv(MultipartFile file) throws Exception {
+		List<Quiz> quizList = new ArrayList<>();
+		/*処理次回記載*/
 	}
 
 }

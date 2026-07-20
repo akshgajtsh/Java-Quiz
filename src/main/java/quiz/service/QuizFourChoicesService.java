@@ -2,6 +2,8 @@ package quiz.service;
 
 import java.util.Optional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import quiz.entity.QuizFourChoices;
 
 public interface QuizFourChoicesService {
@@ -26,5 +28,8 @@ public interface QuizFourChoicesService {
 
 	/*削除*/
 	void deleteQuizFourChoices(Integer id);
+	
+	/*CSV読取*/
+	int insertFromCsv(MultipartFile file) throws Exception;
 
 }
