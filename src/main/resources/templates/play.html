@@ -2,29 +2,77 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>「〇×クイズ」アプリ：PLAY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>〇×クイズ - PLAY</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons (〇×アイコン用) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-light min-vh-100 d-flex align-items-center py-4">
 
-    <h1>「〇×クイズ」アプリ：PLAY</h1>
-    <h3>クイズ</h3>
+    <div class="container" style="max-width: 600px;">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            
+            <!-- クイズがない場合などのメッセージ表示エリア -->
+            <div th:if="${msg}" class="card-body p-5 text-center">
+                <div class="alert alert-warning border-0 shadow-sm mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span th:text="${msg}">問題がありません</span>
+                </div>
+                <a th:href="@{/quiz}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                    <i class="bi bi-arrow-left me-1"></i> 管理画面（CRUD）へ戻る
+                </a>
+            </div>
 
-    <!--/* クイズがない場合などのメッセージ表示エリア */-->
-    <th:block th:if="${msg}">
-        <p th:text="${msg}" style="color:red"></p>
-        <a th:href="@{/quiz/}">CRUD画面へ</a>
-    </th:block>
+            <!-- クイズ出題エリア -->
+            <div th:unless="${msg}" class="card-body p-4 p-md-5">
+                
+                <!-- プログレス（進行状況）ヘッダー -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                            第 <span th:text="${currentNumber}">1</span> 問 / 10問
+                        </span>
+                        <span class="text-muted small fw-bold" th:text="${currentNumber * 10} + '% 完了'">10% 完了</span>
+                    </div>
+                    <!-- Bootstrapのプログレスバー -->
+                    <div class="progress" style="height: 10px;" role="progressbar" aria-label="Quiz progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                             th:style="'width: ' + (${currentNumber} * 10) + '%;'"></div>
+                    </div>
+                </div>
 
-    <!--/* クイズ出題エリア */-->
-    <th:block th:unless="${msg}">
-        <p th:text="${quizForm.question}">クイズ内容</p>
-        
-        <form th:action="@{/quiz/check}" th:object="${quizForm}" method="POST">
-            <input type="hidden" th:field="*{id}">
-            <button name="answer" value="true">〇</button>
-            <button name="answer" value="false">×</button>
-        </form>
-    </th:block>
+                <!-- 問題文カード -->
+                <div class="card bg-body-tertiary border-0 rounded-3 p-4 mb-4 text-center">
+                    <p class="card-text fs-4 fw-bold text-dark mb-0 lh-base" th:text="${quizForm.question}">
+                        ここにクイズの問題文が表示されます。
+                    </p>
+                </div>
+                
+                <!-- 〇×選択ボタン (Bootstrap Grid) -->
+                <form th:action="@{/quiz/check}" th:object="${quizForm}" method="POST">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <button type="submit" name="answer" value="true" 
+                                    class="btn btn-danger btn-lg w-100 py-3 rounded-3 shadow-sm fw-bold display-4 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-circle fs-1"></i>
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" name="answer" value="false" 
+                                    class="btn btn-primary btn-lg w-100 py-3 rounded-3 shadow-sm fw-bold display-4 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-x-lg fs-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
 
 </body>
 </html>

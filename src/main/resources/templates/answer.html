@@ -2,18 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>「〇×クイズ」アプリ：解答</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2択クイズ結果画面</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* 仕様書のオレンジ角丸枠を再現 */
+        .result-box {
+            border: 2px solid #ffa500;
+            border-radius: 24px;
+            background-color: #ffffff;
+            padding: 40px 20px;
+        }
+        /* 仕様書の青色イタリックタイトル */
+        .title-style {
+            color: #1a5276;
+            font-style: italic;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light min-vh-100 d-flex align-items-center py-4">
 
-    <h1>「〇×クイズ」アプリ：解答</h1>
-    
-    <!--/* 正解・不正解などの結果メッセージ表示領域 */-->
-    <h2 th:text="${msg}" style="color:red">メッセージ表示領域</h2>
-    
-    <!--/* ナビゲーションリンク */-->
-    <a th:href="@{/quiz/play}">リプレイ</a><br>
-    <a th:href="@{/quiz}">CRUD画面へ</a>
+    <!-- 全体を囲む枠（仕様書の最外枠） -->
+    <div class="container bg-white border border-dark rounded-3 p-4 p-md-5 shadow-sm text-center" style="max-width: 800px;">
+        
+        <!-- 中央上部タイトル（〇×2択クイズ） -->
+        <h1 class="fw-bold display-4 mb-5 title-style">〇×2択クイズ</h1>
+
+        <!-- 中央の角丸枠（仕様書の「5/10」表示エリア） -->
+        <div class="result-box my-4 mx-auto" style="max-width: 500px;">
+            <p class="display-1 fw-bold text-danger mb-0" th:text="${score} + '/10'">5/10</p>
+        </div>
+            
+        <!-- 下部メッセージ（10問中〇問正解！！） -->
+        <h2 class="fw-bold text-danger display-6 mt-4 mb-5" th:text="'10問中' + ${score} + '問正解！！'">
+            10問中5問正解！！
+        </h2>
+
+        <!-- アクションボタンエリア（再挑戦・戻る） -->
+        <div class="d-flex justify-content-center gap-3 pt-3">
+            <a th:href="@{/quiz/play}" class="btn btn-primary btn-lg rounded-pill px-4 fw-bold shadow-sm">
+                <i class="bi bi-arrow-repeat me-1"></i> もう一度遊ぶ
+            </a>
+            <a th:href="@{/}" class="btn btn-outline-secondary btn-lg rounded-pill px-4 fw-bold">
+                <i class="bi bi-house-door me-1"></i> TOP画面へ
+            </a>
+        </div>
+
+    </div>
 
 </body>
 </html>

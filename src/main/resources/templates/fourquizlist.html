@@ -1,133 +1,154 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>4択クイズ管理画面</title>
-    <!-- 画面を綺麗にするためのCSS（Bootstrap） -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<title>4択クイズ管理画面</title>
+	<!-- 画面を綺麗にするためのCSS（Bootstrap） -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 <body class="bg-light">
 
-<div class="container mt-5 pd-5" style="max-width: 800px;">
-    <!-- 画面タイトル -->
-    <h1 class="mb-4 text-center" th:text="${title}">4択クイズ一覧</h1>
+	<div class="container mt-5 pd-5" style="max-width: 800px;">
+		<!-- 画面タイトル -->
+		<h1 class="mb-4 text-center" th:text="${title}">4択クイズ一覧</h1>
 
-    <!-- 完了メッセージ表示（登録・更新・削除が成功した時用） -->
-    <div th:if="${complete}" class="alert alert-success" role="alert" th:text="${complete}"></div>
+		<!-- 完了メッセージ表示（登録・更新・削除が成功した時用） -->
+		<div th:if="${complete}" class="alert alert-success" role="alert" th:text="${complete}"></div>
 
-    <!-- 📝 入力フォーム（新規登録 と 編集 で自動切り替え） -->
-    <div class="card mb-5 shadow-sm">
-        <div class="card-body">
-            <h3 class="card-title h5 mb-3" th:text="${quizFourChoicesForm.newFourQuiz} ? '✨ クイズ新規登録' : '✏️ クイズ編集'"></h3>
-            
-            <!-- 
+		<!-- 📝 入力フォーム（新規登録 と 編集 で自動切り替え） -->
+		<div class="card mb-5 shadow-sm">
+			<div class="card-body">
+				<h3 class="card-title h5 mb-3" th:text="${quizFourChoicesForm.newFourQuiz} ? '✨ クイズ新規登録' : '✏️ クイズ編集'">
+				</h3>
+
+				<!-- 
                th:action の分岐: 
                新規なら /quizFourChoices/insert、編集なら /quizFourChoices/update へ送信 
             -->
-            <form th:action="${quizFourChoicesForm.newFourQuiz} ? @{/quizFourChoices/insert} : @{/quizFourChoices/update}" 
-                  th:object="${quizFourChoicesForm}" method="post">
-                
-                <!-- 🥷 健忘症のJavaにIDを思い出させるための「隠し入力欄」 -->
-                <input type="hidden" th:field="*{id}">
+				<form
+					th:action="${quizFourChoicesForm.newFourQuiz} ? @{/quizFourChoices/insert} : @{/quizFourChoices/update}"
+					th:object="${quizFourChoicesForm}" method="post">
 
-                <!-- 問題文 -->
-                <div class="mb-3">
-                    <label class="form-label font-weight-bold">問題文：</label>
-                    <textarea class="form-control" th:field="*{question}" rows="2" placeholder="問題文を入力してください"></textarea>
-                    <div class="text-danger" th:if="${#fields.hasErrors('question')}" th:errors="*{question}"></div>
-                </div>
 
-                <!-- 選択肢 1〜4 -->
-                <div class="row mb-3">
-                    <div class="col-6 mb-2">
-                        <label class="form-label text-muted small">選択肢 1</label>
-                        <input type="text" class="form-control" th:field="*{choice_1}" placeholder="選択肢1">
-                        <div class="text-danger" th:if="${#fields.hasErrors('choice_1')}" th:errors="*{choice_1}"></div>
-                    </div>
-                    <div class="col-6 mb-2">
-                        <label class="form-label text-muted small">選択肢 2</label>
-                        <input type="text" class="form-control" th:field="*{choice_2}" placeholder="選択肢2">
-                        <div class="text-danger" th:if="${#fields.hasErrors('choice_2')}" th:errors="*{choice_2}"></div>
-                    </div>
-                    <div class="col-6 mb-2">
-                        <label class="form-label text-muted small">選択肢 3</label>
-                        <input type="text" class="form-control" th:field="*{choice_3}" placeholder="選択肢3">
-                        <div class="text-danger" th:if="${#fields.hasErrors('choice_3')}" th:errors="*{choice_3}"></div>
-                    </div>
-                    <div class="col-6 mb-2">
-                        <label class="form-label text-muted small">選択肢 4</label>
-                        <input type="text" class="form-control" th:field="*{choice_4}" placeholder="選択肢4">
-                        <div class="text-danger" th:if="${#fields.hasErrors('choice_4')}" th:errors="*{choice_4}"></div>
-                    </div>
-                </div>
+					<input type="hidden" th:field="*{id}">
 
-                <!-- 正解（1〜4の数値を選択） -->
-                <div class="mb-3">
-                    <label class="form-label font-weight-bold">正解の番号：</label>
-                    <select class="form-select" th:field="*{answer}">
-                        <option value="1">選択肢 1 が正解</option>
-                        <option value="2">選択肢 2 が正解</option>
-                        <option value="3">選択肢 3 が正解</option>
-                        <option value="4">選択肢 4 が正解</option>
-                    </select>
-                    <div class="text-danger" th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}"></div>
-                </div>
+					<!-- 問題文 -->
+					<div class="mb-3">
+						<label class="form-label font-weight-bold">問題文：</label>
+						<textarea class="form-control" th:field="*{question}" rows="2"
+							placeholder="問題文を入力してください"></textarea>
+						<div class="text-danger" th:if="${#fields.hasErrors('question')}" th:errors="*{question}"></div>
+					</div>
 
-                <!-- 作成者 -->
-                <div class="mb-4">
-                    <label class="form-label font-weight-bold">作成者：</label>
-                    <input type="text" class="form-control" th:field="*{author}" placeholder="あなたの名前">
-                    <div class="text-danger" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
-                </div>
+					<!-- 選択肢 1〜4 -->
+					<div class="row mb-3">
+						<div class="col-6 mb-2">
+							<label class="form-label text-muted small">選択肢 1</label>
+							<input type="text" class="form-control" th:field="*{choice_1}" placeholder="選択肢1">
+							<div class="text-danger" th:if="${#fields.hasErrors('choice_1')}" th:errors="*{choice_1}">
+							</div>
+						</div>
+						<div class="col-6 mb-2">
+							<label class="form-label text-muted small">選択肢 2</label>
+							<input type="text" class="form-control" th:field="*{choice_2}" placeholder="選択肢2">
+							<div class="text-danger" th:if="${#fields.hasErrors('choice_2')}" th:errors="*{choice_2}">
+							</div>
+						</div>
+						<div class="col-6 mb-2">
+							<label class="form-label text-muted small">選択肢 3</label>
+							<input type="text" class="form-control" th:field="*{choice_3}" placeholder="選択肢3">
+							<div class="text-danger" th:if="${#fields.hasErrors('choice_3')}" th:errors="*{choice_3}">
+							</div>
+						</div>
+						<div class="col-6 mb-2">
+							<label class="form-label text-muted small">選択肢 4</label>
+							<input type="text" class="form-control" th:field="*{choice_4}" placeholder="選択肢4">
+							<div class="text-danger" th:if="${#fields.hasErrors('choice_4')}" th:errors="*{choice_4}">
+							</div>
+						</div>
+					</div>
 
-                <!-- ボタン（新規なら「登録」、編集なら「更新」） -->
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary" th:text="${quizFourChoicesForm.newFourQuiz} ? '登録する' : '更新する'"></button>
-                    <!-- 編集モードの時だけ「新規登録に戻る」リンクを表示 -->
-                    <a th:unless="${quizFourChoicesForm.newFourQuiz}" th:href="@{/quizFourChoices}" class="btn btn-outline-secondary btn-sm mt-1">キャンセル（新規登録に戻る）</a>
-                </div>
-            </form>
-        </div>
-    </div>
+					<!-- 正解（1〜4の数値を選択） -->
+					<div class="mb-3">
+						<label class="form-label font-weight-bold">正解の番号：</label>
+						<select class="form-select" th:field="*{answer}">
+							<option value="1">選択肢 1 が正解</option>
+							<option value="2">選択肢 2 が正解</option>
+							<option value="3">選択肢 3 が正解</option>
+							<option value="4">選択肢 4 が正解</option>
+						</select>
+						<div class="text-danger" th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}"></div>
+					</div>
 
-    <!-- 📊 登録済みクイズの一覧表示 -->
-    <h2 class="h4 mb-3">📋 登録済みの4択クイズ一覧</h2>
-    <div th:if="${#lists.isEmpty(list)}" class="text-muted text-center py-4 bg-white rounded border">
-        まだクイズが登録されていません。上のフォームから登録してみましょう！
-    </div>
+					<!-- 作成者 -->
+					<div class="mb-4">
+						<label class="form-label font-weight-bold">作成者：</label>
+						<input type="text" class="form-control" th:field="*{author}" placeholder="あなたの名前">
+						<div class="text-danger" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+					</div>
 
-    <div th:unless="${#lists.isEmpty(list)}" class="list-group shadow-sm">
-        <div th:each="obj : ${list}" class="list-group-item p-3 bg-white">
-            <div class="d-flex w-100 justify-content-between align-items-start mb-2">
-                <div>
-                    <span class="badge bg-secondary me-2">ID: [[${obj.id}]]</span>
-                    <strong class="fs-5" th:text="${obj.question}">問題文</strong>
-                </div>
-                <small class="text-muted" th:text="'作成者: ' + ${obj.author}">作成者</small>
-            </div>
-            
-            <!-- 選択肢の確認用 -->
-            <div class="row g-2 my-2 small text-muted">
-                <div class="col-6" th:text="'1. ' + ${obj.choice_1}" th:classappend="${obj.answer == 1} ? 'text-success fw-bold' : ''"></div>
-                <div class="col-6" th:text="'2. ' + ${obj.choice_2}" th:classappend="${obj.answer == 2} ? 'text-success fw-bold' : ''"></div>
-                <div class="col-6" th:text="'3. ' + ${obj.choice_3}" th:classappend="${obj.answer == 3} ? 'text-success fw-bold' : ''"></div>
-                <div class="col-6" th:text="'4. ' + ${obj.choice_4}" th:classappend="${obj.answer == 4} ? 'text-success fw-bold' : ''"></div>
-            </div>
+					<!-- ボタン（新規なら「登録」、編集なら「更新」） -->
+					<div class="d-grid gap-2">
+						<button type="submit" class="btn btn-primary"
+							th:text="${quizFourChoicesForm.newFourQuiz} ? '登録する' : '更新する'"></button>
+						<!-- 編集モードの時だけ「新規登録に戻る」リンクを表示 -->
+						<a th:unless="${quizFourChoicesForm.newFourQuiz}" th:href="@{/quizFourChoices}"
+							class="btn btn-outline-secondary btn-sm mt-1">キャンセル（新規登録に戻る）</a>
+					</div>
+				</form>
+			</div>
+		</div>
 
-            <!-- 操作ボタン（編集と削除） -->
-            <div class="d-flex justify-content-end gap-2 mt-2">
-                <!-- ✏️ 編集ボタン -->
-                <a th:href="@{/quizFourChoices/edit/{id}(id=${obj.id})}" class="btn btn-sm btn-outline-primary">編集</a>
-                
-                <!-- 🗑️ 削除ボタン（誤操作防止のためにPOST送信のフォームにしてあります） -->
-                <form th:action="@{/quizFourChoices/delete}" method="post" onsubmit="return confirm('本当に削除しますか？');">
-                    <input type="hidden" name="id" th:value="${obj.id}">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">削除</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="mb-5">&nbsp;</div>
+		<!--  登録済みクイズの一覧表示 -->
+		<h2 class="h4 mb-3">📋 登録済みの4択クイズ一覧</h2>
+		<div th:if="${#lists.isEmpty(list)}" class="text-muted text-center py-4 bg-white rounded border">
+			まだクイズが登録されていません。上のフォームから登録してみましょう！
+		</div>
+
+		<div th:unless="${#lists.isEmpty(list)}" class="list-group shadow-sm">
+			<div th:each="obj : ${list}" class="list-group-item p-3 bg-white">
+				<div class="d-flex w-100 justify-content-between align-items-start mb-2">
+					<div>
+						<span class="badge bg-secondary me-2">ID: [[${obj.id}]]</span>
+						<strong class="fs-5" th:text="${obj.question}">問題文</strong>
+					</div>
+					<small class="text-muted" th:text="'作成者: ' + ${obj.author}">作成者</small>
+				</div>
+
+				<!-- 選択肢の確認用 -->
+				<div class="row g-2 my-2 small text-muted">
+					<div class="col-6" th:text="'1. ' + ${obj.choice_1}"
+						th:classappend="${obj.answer == 1} ? 'text-success fw-bold' : ''"></div>
+					<div class="col-6" th:text="'2. ' + ${obj.choice_2}"
+						th:classappend="${obj.answer == 2} ? 'text-success fw-bold' : ''"></div>
+					<div class="col-6" th:text="'3. ' + ${obj.choice_3}"
+						th:classappend="${obj.answer == 3} ? 'text-success fw-bold' : ''"></div>
+					<div class="col-6" th:text="'4. ' + ${obj.choice_4}"
+						th:classappend="${obj.answer == 4} ? 'text-success fw-bold' : ''"></div>
+				</div>
+
+				<!-- 操作ボタン（編集と削除） -->
+				<div class="d-flex justify-content-end gap-2 mt-2">
+					<!-- ✏️ 編集ボタン -->
+					<a th:href="@{/quizFourChoices/edit/{id}(id=${obj.id})}"
+						class="btn btn-sm btn-outline-primary">編集</a>
+
+					<!-- 🗑️ 削除ボタン（誤操作防止のためにPOST送信のフォームにしてあります） -->
+					<form th:action="@{/quizFourChoices/delete}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+						<input type="hidden" name="id" th:value="${obj.id}">
+						<button type="submit" class="btn btn-sm btn-outline-danger">削除</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--  トップへ戻るリンク -->
+		<div class="mt-5 pt-4 text-center border-top">
+			<a th:href="@{/}" class="text-secondary text-decoration-none">アプリのトップページに戻る</a>
+		</div>
+	</div>
+	<div class="mb-5">&nbsp;</div>
 </body>
+
 </html>

@@ -11,7 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import quiz.entity.Quiz;
-import quiz.entity.QuizFourChoices;
 import quiz.repository.QuizFourChoicesRepository;
 import quiz.service.QuizService;
 
@@ -114,35 +113,35 @@ public class QuizApplication implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception{
-		System.out.println("--- 🚀 4択クイズのテストデータ登録を開始します ---");
+//		System.out.println("--- 🚀 4択クイズのテストデータ登録を開始します ---");
 
         // 1. テストデータのインスタンスを作成 (IDは自動採番されるので null)
-        QuizFourChoices testQuiz = new QuizFourChoices(
-        		null,
-                "Javaでボイラープレートコードを削減するためのライブラリはどれ？",
-                "Spring Boot",
-                "Lombok",
-                "Hibernate",
-                "PostgreSQL",
-                2,
-                "ウナ"
-        );
-
-        // 2. データベースに保存
-        QuizFourChoices savedQuiz = repository.save(testQuiz);
-        System.out.println("💾 データベースに保存しました！ ID: " + savedQuiz.getId());
-
-        // 3. 全件取得してコンソールに表示
-        System.out.println("🔍 登録されたデータを取得します：");
-        repository.findAll().forEach(quiz -> {
-            System.out.println("問題: " + quiz.getQuestion());
-            System.out.println("選択肢1: " + quiz.getChoice_1());
-            System.out.println("選択肢2: " + quiz.getChoice_2());
-            System.out.println("正解番号: " + quiz.getAnswer());
-            System.out.println("作成者(Author): " + quiz.getAuthor()); // 👈 ここもgetAuthorに！
-        });
-
-        System.out.println("--- 🎉 テストデータ登録テストが正常に終了しました ---");
+//        QuizFourChoices testQuiz = new QuizFourChoices(
+//        		null,
+//                "Javaでボイラープレートコードを削減するためのライブラリはどれ？",
+//                "Spring Boot",
+//                "Lombok",
+//                "Hibernate",
+//                "PostgreSQL",
+//                2,
+//                "ウナ"
+//        );
+//
+//        // 2. データベースに保存
+//        QuizFourChoices savedQuiz = repository.save(testQuiz);
+//        System.out.println("💾 データベースに保存しました！ ID: " + savedQuiz.getId());
+//
+//        // 3. 全件取得してコンソールに表示
+//        System.out.println("🔍 登録されたデータを取得します：");
+//        repository.findAll().forEach(quiz -> {
+//            System.out.println("問題: " + quiz.getQuestion());
+//            System.out.println("選択肢1: " + quiz.getChoice_1());
+//            System.out.println("選択肢2: " + quiz.getChoice_2());
+//            System.out.println("正解番号: " + quiz.getAnswer());
+//            System.out.println("作成者(Author): " + quiz.getAuthor()); // 👈 ここもgetAuthorに！
+//        });
+//
+//        System.out.println("--- 🎉 テストデータ登録テストが正常に終了しました ---");
 	}
 
 }

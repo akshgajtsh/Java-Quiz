@@ -1,92 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>4択クイズ プレイ</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<title>4択クイズ プレイ</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 <body class="bg-light">
 
-<div class="container text-center" style="margin-top: 60px; max-width: 800px;">
-    
-    <!-- タイトル -->
-    <h1 class="display-5 fw-bold text-dark mb-4 text-start">4択クイズ</h1>
+	<div class="container text-center" style="margin-top: 60px; max-width: 800px;">
 
-    <!-- ⚠️ クイズが1件もない場合の警告 -->
-    <div th:if="${msg}" class="alert alert-warning py-4 fs-5" th:text="${msg}"></div>
+		<!-- タイトル -->
+		<h1 class="display-5 fw-bold text-dark mb-4 text-start">4択クイズ</h1>
 
-    <!-- 🎮 クイズがある場合に表示するメインエリア -->
-    <div th:if="${quiz}">
-        
-        <!-- 📝 問題文表示エリア（設計図の緑枠をイメージ） -->
-        <div class="card shadow-sm mb-5 border-success-subtle bg-white">
-            <div class="card-body py-5">
-                <p class="fs-2 fw-semibold text-secondary-emphasis m-0" th:text="${quiz.question}">（問題文表示）</p>
-            </div>
-        </div>
+		<!--  クイズが1件もない場合の警告 -->
+		<div th:if="${msg}" class="alert alert-warning py-4 fs-5" th:text="${msg}"></div>
 
-		<!-- 📢 結果表示エリア -->
-		<div th:if="${result}" class="mb-4">
-		    <!-- 💡 Javaから届く boxClass（alert-success または alert-danger）をそのまま適用します -->
-		    <div class="alert fs-3 fw-bold shadow-sm py-4" th:classappend="${boxClass}">
-		        <span th:text="${result}"></span>
-		    </div>
-		    <!-- 次の問題へ進むボタン -->
-		    <a th:href="@{/quizFourChoices/play}" class="btn btn-outline-primary btn-lg px-5 my-3 shadow-sm fw-bold">次の問題へ ➡️</a>
+		<!--  クイズがある場合に表示するメインエリア -->
+		<div th:if="${quiz}">
+
+			<!--  問題文表示エリア（設計図の緑枠をイメージ） -->
+			<div class="card shadow-sm mb-5 border-success-subtle bg-white">
+				<div class="card-body py-5">
+					<p class="fs-2 fw-semibold text-secondary-emphasis m-0" th:text="${quiz.question}">（問題文表示）</p>
+				</div>
+			</div>
+
+			<!--  結果表示エリア -->
+			<div th:if="${result}" class="mb-4">
+				<!--  Javaから届く boxClass（alert-success または alert-danger）をそのまま適用します -->
+				<div class="alert fs-3 fw-bold shadow-sm py-4" th:classappend="${boxClass}">
+					<span th:text="${result}"></span>
+					<p th:unless="${iscorrect}" class="fs-6 fw-normal text-muted mt-3 mb-0"
+						th:text="'正解は「' + ${rightAnswer} + '」でした！'"></p>
+				</div>
+				<!-- 次の問題へ進むボタン -->
+				<a th:href="@{/quizFourChoices/play}"
+					class="btn btn-outline-primary btn-lg px-5 my-3 shadow-sm fw-bold">次の問題へ ➡️</a>
+			</div>
+
+			<!--  選択肢ボタンエリア（まだ回答していない時だけボタンを押せるように制御） -->
+			<div class="row g-3 justify-content-center" th:if="${result == null}">
+				<!-- 選択肢 1 -->
+				<div class="col-6 col-md-3">
+					<form th:action="@{/quizFourChoices/check}" method="post">
+						<input type="hidden" name="id" th:value="${quiz.id}">
+						<input type="hidden" name="userAnswer" value="1">
+						<button type="submit"
+							class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover"
+							th:text="${quiz.choice_1}">選択肢1</button>
+					</form>
+				</div>
+				<!-- 選択肢 2 -->
+				<div class="col-6 col-md-3">
+					<form th:action="@{/quizFourChoices/check}" method="post">
+						<input type="hidden" name="id" th:value="${quiz.id}">
+						<input type="hidden" name="userAnswer" value="2">
+						<button type="submit"
+							class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover"
+							th:text="${quiz.choice_2}">選択肢2</button>
+					</form>
+				</div>
+				<!-- 選択肢 3 -->
+				<div class="col-6 col-md-3">
+					<form th:action="@{/quizFourChoices/check}" method="post">
+						<input type="hidden" name="id" th:value="${quiz.id}">
+						<input type="hidden" name="userAnswer" value="3">
+						<button type="submit"
+							class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover"
+							th:text="${quiz.choice_3}">選択肢3</button>
+					</form>
+				</div>
+				<!-- 選択肢 4 -->
+				<div class="col-6 col-md-3">
+					<form th:action="@{/quizFourChoices/check}" method="post">
+						<input type="hidden" name="id" th:value="${quiz.id}">
+						<input type="hidden" name="userAnswer" value="4">
+						<button type="submit"
+							class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover"
+							th:text="${quiz.choice_4}">選択肢4</button>
+					</form>
+				</div>
+			</div>
+
 		</div>
 
-        <!-- 🖱️ 選択肢ボタンエリア（まだ回答していない時だけボタンを押せるように制御） -->
-        <div class="row g-3 justify-content-center" th:if="${result == null}">
-            <!-- 選択肢 1 -->
-            <div class="col-6 col-md-3">
-                <form th:action="@{/quizFourChoices/check}" method="post">
-                    <input type="hidden" name="id" th:value="${quiz.id}">
-                    <input type="hidden" name="userAnswer" value="1">
-                    <button type="submit" class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover" th:text="${quiz.choice_1}">選択肢1</button>
-                </form>
-            </div>
-            <!-- 選択肢 2 -->
-            <div class="col-6 col-md-3">
-                <form th:action="@{/quizFourChoices/check}" method="post">
-                    <input type="hidden" name="id" th:value="${quiz.id}">
-                    <input type="hidden" name="userAnswer" value="2">
-                    <button type="submit" class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover" th:text="${quiz.choice_2}">選択肢2</button>
-                </form>
-            </div>
-            <!-- 選択肢 3 -->
-            <div class="col-6 col-md-3">
-                <form th:action="@{/quizFourChoices/check}" method="post">
-                    <input type="hidden" name="id" th:value="${quiz.id}">
-                    <input type="hidden" name="userAnswer" value="3">
-                    <button type="submit" class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover" th:text="${quiz.choice_3}">選択肢3</button>
-                </form>
-            </div>
-            <!-- 選択肢 4 -->
-            <div class="col-6 col-md-3">
-                <form th:action="@{/quizFourChoices/check}" method="post">
-                    <input type="hidden" name="id" th:value="${quiz.id}">
-                    <input type="hidden" name="userAnswer" value="4">
-                    <button type="submit" class="btn btn-white border shadow-sm w-100 py-3 fw-bold text-dark btn-hover" th:text="${quiz.choice_4}">選択肢4</button>
-                </form>
-            </div>
-        </div>
+		<!--  トップへ戻るリンク -->
+		<div class="mt-5 pt-4 border-top">
+			<a th:href="@{/}" class="text-secondary text-decoration-none">アプリのトップページに戻る</a>
+		</div>
+	</div>
 
-    </div>
-
-    <!-- 🏠 トップへ戻るリンク -->
-    <div class="mt-5 pt-4 border-top">
-        <a th:href="@{/}" class="text-secondary text-decoration-none">🏠 アプリのトップページに戻る</a>
-    </div>
-</div>
-
-<!-- ボタンにホバーしたときのちょっとした装飾用スタイル -->
-<style>
-    .btn-hover:hover {
-        background-color: #f8f9fa !important;
-        border-color: #0d6efd !important;
-        color: #0d6efd !important;
-    }
-</style>
+	<!-- ボタンにホバーしたときのちょっとした装飾用スタイル -->
+	<style>
+		.btn-hover:hover {
+			background-color: #f8f9fa !important;
+			border-color: #0d6efd !important;
+			color: #0d6efd !important;
+		}
+	</style>
 
 </body>
+
 </html>
