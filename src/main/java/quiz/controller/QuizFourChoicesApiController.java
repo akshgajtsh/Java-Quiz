@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import quiz.service.QuizService;
+import quiz.service.QuizFourChoicesService;
 
 @RestController
-@RequestMapping("/api/quiz")
-public class QuizApiController {
+@RequestMapping("/api/quiz4")
+public class QuizFourChoicesApiController {
 	@Autowired
-	private QuizService quizService;
+	private QuizFourChoicesService quizFourChoicesService;
 	
 	@PostMapping("/upload-csv")
 	public ResponseEntity<Map<String, Object>> uploadCsv(@RequestParam("file") MultipartFile file){
@@ -30,7 +30,7 @@ public class QuizApiController {
 		}
 		
 		try {
-			int count = quizService.insertFromCsv(file);
+			int count = quizFourChoicesService.insertFromCsv(file);
 			response.put("success", true);
 			response.put("message", count + "件のクイズ一括登録しました");
 			response.put("count", count);
@@ -42,5 +42,4 @@ public class QuizApiController {
 			return ResponseEntity.internalServerError().body(response);
 		}
 	}
-
 }

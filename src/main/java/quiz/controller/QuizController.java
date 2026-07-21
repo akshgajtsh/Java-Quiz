@@ -93,7 +93,6 @@ public class QuizController {
 		if (!result.hasErrors()) {
 			quizService.updateQuiz(quiz);
 			redirectAttributes.addFlashAttribute("complete", "更新が完了しました");
-			//			return "redirect:/quiz/" + quiz.getId();
 			return "redirect:/quiz";
 		} else {
 			makeUpdateModel(quizForm, model);
